@@ -3,14 +3,10 @@
   "builds": [
     {
       "src": "api/**/*",
-      "use": "@vercel/dotnet"
+      "use": "@vercel/static"
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
     {
       "src": "/(.*)",
       "dest": "/api/$1"
