@@ -1,70 +1,10 @@
-﻿@*  @using InterfazUsuario.Models
+﻿ @using InterfazUsuario.Models
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
 @model List<Question>
-<div class="container">
-    @foreach (var question in Model)
-    {
-        <div class="question-box">
-            <h3>@question.Text</h3>
-            <textarea class="answer-input" data-id="@question.Id"></textarea>
-            <button class="show-answer" data-id="@question.Id" data-type="@question.DisplayType">
-                Mostrar Respuesta
-            </button>
-        </div>
-    }
-    <button id="saveBtn">Guardar Respuestas</button>
-    <button id="loadBtn">Cargar Respuestas</button>
-</div>
-
-<div id="emailModal" class="modal">
-    <input type="email" id="emailInput" placeholder="Ingrese su email">
-    <button id="sendEmailBtn">Enviar</button>
-</div> 
-
- *@
-
-
- @using InterfazUsuario.Models
-
-@{
-    ViewData["Title"] = "Home Page";
-}
-
-@model List<Question>
-
-@* <div class="container">
-    <div id="questionContainer">
-        @for (int i = 0; i < Model.Count; i++)
-        {
-            var question = Model[i];
-            <div class="question-box" data-index="@i" style="display: @(i == 0 ? "block" : "none")">
-                <h3>@question.Text</h3>
-                <textarea class="answer-input" data-id="@question.Id"></textarea>
-                <select class="display-type">
-                    <option value="Popup">Popup</option>
-                    <option value="NewWindow">Nueva Ventana</option>
-                    <option value="InlineNote">Nota en Línea</option>
-                    <option value="Email">Email</option>
-                </select>
-                <button class="show-answer" data-id="@question.Id">Mostrar Respuesta</button>
-            </div>
-        }
-    </div>
-    <button id="prevBtn" disabled>Anterior</button>
-    <button id="nextBtn">Siguiente</button>
-    <button id="saveBtn">Guardar Respuestas</button>
-    <button id="loadBtn">Cargar Respuestas</button>
-</div>
-
-<div id="emailModal" class="modal" style="display:none;">
-    <input type="email" id="emailInput" placeholder="Ingrese su email">
-    <button id="sendEmailBtn">Enviar</button>
-</div>
- *@
 
 
 <style>
@@ -87,18 +27,7 @@
         padding: 1.5rem;
     }
 
-    /* .question-box {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin: 1.5rem 0;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s;
-    }
-
-        .question-box:hover {
-            transform: translateY(-2px);
-        } */
+   
 
 
     .caja-de-preguntas{
@@ -114,16 +43,7 @@
             transform: translateY(-2px);
         }
 
-    /* .answer-input {
-        width: 100%;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid var(--accent);
-        color: var(--light);
-        padding: 0.8rem;
-        border-radius: 8px;
-        margin: 1rem 0;
-        min-height: 100px;
-    } */
+    
 
     .respuesta-input {
         width: 100%;
@@ -288,17 +208,7 @@
         @for (int i = 0; i < Model.Count; i++)
         {
             var question = Model[i];
-            @* <div class="caja-de-preguntas" data-index="@i" style="display: @(i == 0 ? "block" : "none")">
-                <h3>@question.Text</h3>
-                <textarea class="respuesta-input" data-id="@question.Id"></textarea>
-                <select class="display-type">
-                    <option value="Popup">Popup</option>
-                    <option value="NuevaVentana">Nueva Ventana</option>
-                    <option value="TextoEnPantalla">Nota en Línea</option>
-                    <option value="Email">Email</option>
-                </select>
-                <button class="show-answer" data-id="@question.Id">Mostrar Respuesta</button>
-            </div> *@
+          
             <div class="caja-de-preguntas" data-index="@i" style="display: @(i == 0 ? "block" : "none")">
                 <h3>@question.Text</h3>
                 <textarea class="respuesta-input" data-id="@question.Id"></textarea>
@@ -319,14 +229,7 @@
 
         }
     </div>
-   @*  <div class="nav-buttons">
-        <button id="prevBtn" disabled>← Anterior</button>
-        <button id="nextBtn">Siguiente →</button>
-    </div>
-    <div class="action-buttons">
-        <button id="salvar-Btn">💾 Guardar</button>
-        <button id="cargar-Btn">📂 Cargar</button>
-    </div> *@
+  
     <div class="button-container">
         <div class="nav-buttons">
             <button id="prevBtn" disabled>← Anterior</button>
