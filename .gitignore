@@ -1,0 +1,11 @@
+# .NET Core
+bin/
+obj/
+/packages/
+*.user
+*.suo
+*.userprefs
+.vs/
+
+
+

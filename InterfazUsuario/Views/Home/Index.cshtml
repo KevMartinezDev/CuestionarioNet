@@ -1,0 +1,365 @@
+﻿@*  @using InterfazUsuario.Models
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<Question>
+<div class="container">
+    @foreach (var question in Model)
+    {
+        <div class="question-box">
+            <h3>@question.Text</h3>
+            <textarea class="answer-input" data-id="@question.Id"></textarea>
+            <button class="show-answer" data-id="@question.Id" data-type="@question.DisplayType">
+                Mostrar Respuesta
+            </button>
+        </div>
+    }
+    <button id="saveBtn">Guardar Respuestas</button>
+    <button id="loadBtn">Cargar Respuestas</button>
+</div>
+
+<div id="emailModal" class="modal">
+    <input type="email" id="emailInput" placeholder="Ingrese su email">
+    <button id="sendEmailBtn">Enviar</button>
+</div> 
+
+ *@
+
+
+ @using InterfazUsuario.Models
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<Question>
+
+@* <div class="container">
+    <div id="questionContainer">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var question = Model[i];
+            <div class="question-box" data-index="@i" style="display: @(i == 0 ? "block" : "none")">
+                <h3>@question.Text</h3>
+                <textarea class="answer-input" data-id="@question.Id"></textarea>
+                <select class="display-type">
+                    <option value="Popup">Popup</option>
+                    <option value="NewWindow">Nueva Ventana</option>
+                    <option value="InlineNote">Nota en Línea</option>
+                    <option value="Email">Email</option>
+                </select>
+                <button class="show-answer" data-id="@question.Id">Mostrar Respuesta</button>
+            </div>
+        }
+    </div>
+    <button id="prevBtn" disabled>Anterior</button>
+    <button id="nextBtn">Siguiente</button>
+    <button id="saveBtn">Guardar Respuestas</button>
+    <button id="loadBtn">Cargar Respuestas</button>
+</div>
+
+<div id="emailModal" class="modal" style="display:none;">
+    <input type="email" id="emailInput" placeholder="Ingrese su email">
+    <button id="sendEmailBtn">Enviar</button>
+</div>
+ *@
+
+
+<style>
+    :root {
+        --deep-blue: #0a1f3d;
+        --accent: #2a5d84;
+        --light: #e0f2fe;
+        --hover-accent: #3b82f6;
+    }
+
+    body {
+        background: var(--deep-blue);
+        color: var(--light);
+        font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 1.5rem;
+    }
+
+    /* .question-box {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+    }
+
+        .question-box:hover {
+            transform: translateY(-2px);
+        } */
+
+
+    .caja-de-preguntas{
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+    }
+
+        .caja-de-preguntas:hover {
+            transform: translateY(-2px);
+        }
+
+    /* .answer-input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--accent);
+        color: var(--light);
+        padding: 0.8rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        min-height: 100px;
+    } */
+
+    .respuesta-input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--accent);
+        color: var(--light);
+        padding: 0.8rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        min-height: 100px;
+    }
+
+    select.display-type {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.5rem;
+        border-radius: 6px;
+        margin: 0.5rem 0;
+    }
+
+    button {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin: 0.5rem;
+    }
+
+        button:hover {
+            background: var(--hover-accent);
+            transform: translateY(-1px);
+        }
+
+  
+    .modal-drop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-contenido {
+        background: var(--deep-blue);
+        padding: 2rem;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 500px;
+        position: relative;
+        border: 1px solid var(--accent);
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        color: var(--light);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.2rem;
+    }
+
+        .modal-close:hover {
+            color: var(--hover-accent);
+        }
+
+    #emailInput {
+        width: 100%;
+        padding: 0.8rem;
+        margin: 1rem 0;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--accent);
+        color: var(--light);
+        border-radius: 6px;
+    }
+
+    .loader {
+        border: 3px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 3px solid #3b82f6;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+     .response-format-section {
+        margin-top: 1rem;
+    }
+    
+    .format-subtitle {
+        color: var(--light);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        opacity: 0.8;
+    }
+    
+    .controls-row {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+    
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .nav-buttons, .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .display-type {
+        min-width: 150px;
+    }
+    
+    @@media (max-width: 600px) {
+        .controls-row {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .button-container {
+            flex-direction: column;
+        }
+        
+        .nav-buttons, .action-buttons {
+            justify-content: center;
+        }
+    }
+
+</style>
+
+<div class="container">
+    <div id="questionContainer">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var question = Model[i];
+            @* <div class="caja-de-preguntas" data-index="@i" style="display: @(i == 0 ? "block" : "none")">
+                <h3>@question.Text</h3>
+                <textarea class="respuesta-input" data-id="@question.Id"></textarea>
+                <select class="display-type">
+                    <option value="Popup">Popup</option>
+                    <option value="NuevaVentana">Nueva Ventana</option>
+                    <option value="TextoEnPantalla">Nota en Línea</option>
+                    <option value="Email">Email</option>
+                </select>
+                <button class="show-answer" data-id="@question.Id">Mostrar Respuesta</button>
+            </div> *@
+            <div class="caja-de-preguntas" data-index="@i" style="display: @(i == 0 ? "block" : "none")">
+                <h3>@question.Text</h3>
+                <textarea class="respuesta-input" data-id="@question.Id"></textarea>
+                <div class="response-format-section">
+                    <h4 class="format-subtitle">Formato de respuesta</h4>
+                    <div class="controls-row">
+                        <select class="display-type">
+                            <option value="Popup">Popup</option>
+                            <option value="NuevaVentana">Nueva Ventana</option>
+                            <option value="TextoEnPantalla">Nota en Línea</option>
+                            <option value="Email">Email</option>
+                        </select>
+                        <button class="show-answer" data-id="@question.Id">Mostrar Respuesta</button>
+                    </div>
+                </div>
+            </div>
+
+
+        }
+    </div>
+   @*  <div class="nav-buttons">
+        <button id="prevBtn" disabled>← Anterior</button>
+        <button id="nextBtn">Siguiente →</button>
+    </div>
+    <div class="action-buttons">
+        <button id="salvar-Btn">💾 Guardar</button>
+        <button id="cargar-Btn">📂 Cargar</button>
+    </div> *@
+    <div class="button-container">
+        <div class="nav-buttons">
+            <button id="prevBtn" disabled>← Anterior</button>
+            <button id="nextBtn">Siguiente →</button>
+        </div>
+        <div class="action-buttons">
+            <button id="salvar-Btn">💾 Guardar </button>
+            <button id="cargar-Btn">📂 Cargar</button>
+        </div>
+    </div>
+    <div id="uploadStatus" style="display: none; margin-top: 1rem;">
+        <span class="loader"></span>
+        <span>Procesando archivo...</span>
+    </div>
+</div>
+
+
+<div id="modalRespuesta" class="modal-drop" style="display: none;">
+    <div class="modal-contenido">
+        <button class="modal-close">×</button>
+        <h3>Respuesta</h3>
+        <pre id="answerText"></pre>
+    </div>
+</div>
+
+
+<div id="emailModal" class="modal-drop" style="display: none;">
+    <div class="modal-contenido">
+        <button class="modal-close">×</button>
+        <h3>Enviar por Email</h3>
+        <input type="email" id="emailInput" placeholder="tu@email.com">
+        <div class="modal-actions">
+            <button id="sendEmailBtn">✉️ Enviar</button>
+        </div>
+    </div>
+</div>
